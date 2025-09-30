@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>生日快乐！</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FF6B6B',
+            secondary: '#4ECDC4',
+            accent: '#FFD166',
+            dark: '#292F36',
+          },
+          fontFamily: {
+            birthday: ['Comic Sans MS', 'cursive', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .text-shadow {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+      .text-shadow-lg {
+        text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+      }
+      .animate-float {
+        animation: float 3s ease-in-out infinite;
+      }
+      .animate-float-delay-1 {
+        animation: float 3s ease-in-out 0.5s infinite;
+      }
+      .animate-float-delay-2 {
+        animation: float 3s ease-in-out 1s infinite;
+      }
+      .animate-pulse-slow {
+        animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+      .animate-scale {
+        animation: scale 2s ease-in-out infinite;
+      }
+      .confetti {
+        position: absolute;
+        opacity: 0;
+      }
+      .balloon {
+        position: absolute;
+        opacity: 0;
+      }
+    }
+    
+    /* 全局动画定义 */
+    @keyframes falling {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-15px);
+      }
+      100% {
+        transform: translateY(0px);
+      }
+    }
+    
+    @keyframes scale {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+    
+    @keyframes balloonRise {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-20vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
+    @keyframes wishAppear {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* 优化触摸设备上的交互体验 */
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      touch-action: manipulation;
+    }
+  </style>
+</head>
+
+<body
+  class="bg-gradient-to-br from-primary/90 to-secondary/90 min-h-screen flex flex-col items-center justify-center overflow-hidden relative p-4">
+
+  <!-- 音频元素 - 自动播放 -->
+  <audio id="birthdaySong" loop preload="auto">
+    <source
+      src="https://lw-sycdn.kuwo.cn/ed0d767c916e2d3dff76699e7d3be956/68dbf5be/resource/30106/trackmedia/M800000YLwPI0v7LiC.mp3"
+      type="audio/mpeg">
+    <!-- 备用音频源 -->
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- 背景装饰元素 - 响应式设计 -->
+  <div class="fixed inset-0 pointer-events-none z-0">
+    <div class="absolute top-5 left-5 text-white/20 text-[4rem] sm:text-[6rem] md:text-[8rem] animate-float-delay-1"><i
+        class="fa fa-star"></i></div>
+    <div class="absolute top-10 right-5 text-white/20 text-[3rem] sm:text-[5rem] md:text-[6rem] animate-float-delay-2">
+      <i class="fa fa-heart"></i>
+    </div>
+    <div class="absolute bottom-5 left-10 text-white/20 text-[3.5rem] sm:text-[6rem] md:text-[7rem] animate-float"><i
+        class="fa fa-gift"></i></div>
+    <div
+      class="absolute bottom-10 right-10 text-white/20 text-[2.5rem] sm:text-[4rem] md:text-[5rem] animate-float-delay-1">
+      <i class="fa fa-birthday-cake"></i>
+    </div>
+  </div>
+
+  <!-- 生日祝福卡片 - 移动端优化 -->
+  <div
+    class="relative bg-white/95 rounded-3xl p-6 sm:p-8 md:p-12 shadow-2xl max-w-md w-full mx-4 transform transition-all duration-500 hover:scale-105 sm:hover:scale-105 z-10 backdrop-blur-sm"
+    style="touch-action: manipulation;">
+    <!-- 装饰元素 - 响应式调整 -->
+    <div
+      class="absolute -top-5 -left-5 bg-accent rounded-full w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center shadow-lg animate-float">
+      <i class="fa fa-birthday-cake text-2xl sm:text-3xl text-dark"></i>
+    </div>
+    <div
+      class="absolute -bottom-5 -right-5 bg-primary rounded-full w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center shadow-lg animate-float-delay-1">
+      <i class="fa fa-gift text-2xl sm:text-3xl text-white"></i>
+    </div>
+
+    <!-- 标题 -->
+    <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-birthday text-primary text-center mb-4 text-shadow-lg animate-scale">
+      生日快乐！</h1>
+
+    <!-- 动态日期显示 -->
+    <div class="text-center mb-6 bg-gradient-to-r from-primary/20 to-secondary/20 p-3 rounded-full">
+      <span id="currentDate" class="text-[clamp(1rem,2vw,1.3rem)] font-birthday text-dark"></span>
+    </div>
+
+    <!-- 生日祝福 -->
+    <p id="birthdayWish" class="text-[clamp(1rem,2vw,1.2rem)] text-center text-dark mb-8 leading-relaxed">
+      愿你的这一天充满欢乐、惊喜和美好的回忆，祝你未来的日子里健康、幸福、一切顺遂！
+    </p>
+
+    <!-- 蛋糕图片 - 响应式优化 -->
+    <div class="mt-6 sm:mt-8 animate-float-delay-1">
+      <img src="https://picsum.photos/seed/birthdaycake/300/200" alt="生日蛋糕"
+        class="rounded-xl shadow-xl max-w-full sm:max-w-[80%] mx-auto object-cover h-auto" loading="lazy">
+    </div>
+
+    <!-- 额外装饰元素 - 触摸友好设计 -->
+    <div class="mt-4 sm:mt-6 flex justify-center space-x-4">
+      <div class="text-accent animate-pulse-slow text-lg sm:text-xl"><i class="fa fa-star"></i></div>
+      <div class="text-primary animate-pulse-slow text-lg sm:text-xl" style="animation-delay: 0.5s;"><i
+          class="fa fa-heart"></i></div>
+      <div class="text-secondary animate-pulse-slow text-lg sm:text-xl" style="animation-delay: 1s;"><i
+          class="fa fa-gift"></i></div>
+    </div>
+  </div>
+
+  <!-- 底部装饰 -->
+  <div class="mt-8 text-center text-white/80 text-sm">
+    <p>🎉 祝你生日快乐 🎉</p>
+  </div>
+
+  <script>
+    // 页面加载完成后执行
+    document.addEventListener('DOMContentLoaded', function () {
+      // 获取元素
+      const birthdaySong = document.getElementById('birthdaySong');
+      const currentDateElement = document.getElementById('currentDate');
+      const birthdayWishElement = document.getElementById('birthdayWish');
+
+
+      // 生日祝福列表
+      const birthdayWishes = [
+        "愿你的生日充满无限的快乐和幸福！",
+        "祝你生日快乐，健康长寿，万事如意！",
+        "愿今天的每一刻都为你带来无尽的喜悦！",
+        "生日快乐！愿你的梦想都能成真！",
+        "在这个特别的日子里，祝你一切都好！",
+        "愿你的生日像你一样特别而美好！",
+        "祝你生日快乐，新的一岁里收获满满！",
+        "愿你的每一天都充满阳光和笑容！"
+      ];
+
+      // 优化的自动播放函数 - 适配移动端
+      function setupAutoPlay() {
+        // 尝试直接播放
+        birthdaySong.play().then(() => {
+          console.log('自动播放成功');
+          // 播放成功后显示彩带效果
+          createConfetti();
+          createBalloons();
+        }).catch(error => {
+          console.log('自动播放被阻止，点击/触摸页面可播放音乐', error);
+          // 创建一个明显的播放提示区域
+          const playButton = document.createElement('div');
+          playButton.className = 'fixed inset-0 flex items-center justify-center z-50 bg-dark/50';
+          playButton.innerHTML = `
+            <div class="bg-primary rounded-full w-20 h-20 flex items-center justify-center shadow-lg animate-pulse">
+              <i class="fa fa-play text-white text-3xl"></i>
+            </div>
+            <p class="absolute bottom-10 text-white text-center px-4">点击或触摸任意位置播放音乐并开始庆祝</p>
+          `;
+          document.body.appendChild(playButton);
+
+          // 移动端友好的事件监听
+          function playOnInteraction() {
+            birthdaySong.play().then(() => {
+              console.log('交互后播放成功');
+              createConfetti();
+              createBalloons();
+              // 移除播放提示
+              playButton.remove();
+              // 移除事件监听器
+              document.body.removeEventListener('click', playOnInteraction);
+              document.body.removeEventListener('touchstart', playOnInteraction, { passive: true });
+            }).catch(err => {
+              console.error('交互播放也失败:', err);
+            });
+          }
+
+          // 同时支持点击和触摸事件
+          document.body.addEventListener('click', playOnInteraction, { once: true });
+          document.body.addEventListener('touchstart', playOnInteraction, { once: true, passive: true });
+        });
+      }
+
+      // 创建庆祝彩带效果
+      function createConfetti() {
+        const colors = ['#FF6B6B', '#4ECDC4', '#FFD166', '#6A0572', '#AB83A1', '#FC5185'];
+        const container = document.body;
+
+        // 创建100个彩带元素
+        for (let i = 0; i < 100; i++) {
+          const confetti = document.createElement('div');
+          confetti.classList.add('confetti');
+
+          // 随机颜色和尺寸
+          const color = colors[Math.floor(Math.random() * colors.length)];
+          confetti.style.backgroundColor = color;
+          confetti.style.width = `${Math.random() * 10 + 5}px`;
+          confetti.style.height = `${Math.random() * 10 + 5}px`;
+
+          // 随机位置
+          confetti.style.left = `${Math.random() * 100}vw`;
+          confetti.style.top = `-20px`;
+
+          // 随机动画参数
+          const duration = Math.random() * 5 + 3;
+          const delay = Math.random() * 2;
+          const rotation = Math.random() * 360;
+
+          // 应用动画
+          confetti.style.animation = `falling ${duration}s ease-in ${delay}s forwards`;
+          confetti.style.transform = `rotate(${rotation}deg)`;
+
+          // 添加到页面
+          container.appendChild(confetti);
+
+          // 动画结束后清理元素
+          setTimeout(() => {
+            confetti.remove();
+          }, (duration + delay) * 1000);
+        }
+      }
+
+      // 创建气球效果
+      function createBalloons() {
+        const colors = ['#FF6B6B', '#4ECDC4', '#FFD166', '#6A0572', '#AB83A1', '#FC5185'];
+        const container = document.body;
+
+        // 创建20个气球
+        for (let i = 0; i < 20; i++) {
+          const balloon = document.createElement('div');
+          balloon.classList.add('balloon');
+
+          // 创建气球形状
+          balloon.innerHTML = `<i class="fa fa-circle" style="color: ${colors[Math.floor(Math.random() * colors.length)]};"></i>`;
+
+          // 随机位置和大小
+          balloon.style.left = `${Math.random() * 100}vw`;
+          balloon.style.fontSize = `${Math.random() * 30 + 20}px`;
+
+          // 随机动画参数
+          const duration = Math.random() * 10 + 10;
+          const delay = Math.random() * 5;
+          const rotation = Math.random() * 720 - 360;
+          const horizontalOffset = Math.random() * 100 - 50;
+
+          // 应用动画
+          balloon.style.animation = `balloonRise ${duration}s ease-in-out ${delay}s forwards`;
+          balloon.style.transform = `translateX(${horizontalOffset}px) rotate(${rotation}deg)`;
+
+          // 添加到页面
+          container.appendChild(balloon);
+
+          // 动画结束后清理元素
+          setTimeout(() => {
+            balloon.remove();
+          }, (duration + delay) * 1000);
+        }
+      }
+
+      // 更新当前日期
+      function updateCurrentDate() {
+        const now = new Date();
+        const options = {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          weekday: 'long'
+        };
+        currentDateElement.textContent = now.toLocaleDateString('zh-CN', options);
+      }
+
+
+
+      // 随机切换生日祝福
+      function changeBirthdayWish() {
+        const randomIndex = Math.floor(Math.random() * birthdayWishes.length);
+        birthdayWishElement.style.opacity = '0';
+
+        setTimeout(() => {
+          birthdayWishElement.textContent = birthdayWishes[randomIndex];
+          birthdayWishElement.style.animation = 'wishAppear 0.5s forwards';
+        }, 300);
+      }
+
+      // 初始化
+      setupAutoPlay();
+      updateCurrentDate();
+
+      // 设置定时器
+      setInterval(createConfetti, 5000);
+      setInterval(createBalloons, 8000);
+      setInterval(changeBirthdayWish, 8000);
+    });
+  </script>
+</body>
+
+</html>
